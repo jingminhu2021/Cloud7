@@ -1,0 +1,29 @@
+{
+  "name": "cloud7",
+  "version": "1.0.0",
+  "description": "iot",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Disquietudee/Cloud7.git"
+  },
+  "author": "cloudteam7",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Disquietudee/Cloud7/issues"
+  },
+  "homepage": "https://github.com/Disquietudee/Cloud7#readme",
+  "dependencies": {
+    "mqtt": "^5.1.3"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "iot"
+  ]
+}
