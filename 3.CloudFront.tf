@@ -1,7 +1,8 @@
 #creating Cloudfront distribution :
 resource "aws_cloudfront_distribution" "cf_dist" {
   enabled = true
-  aliases = [var.domain_name]
+  # aliases = [var.domain_name]
+  web_acl_id = aws_wafv2_web_acl.cloudfront.arn
   origin {
     domain_name = aws_lb.alb.dns_name
     origin_id   = aws_lb.alb.dns_name
@@ -28,13 +29,14 @@ resource "aws_cloudfront_distribution" "cf_dist" {
   restrictions {
     geo_restriction {
       restriction_type = "whitelist"
-      locations        = ["IN", "US", "CA"]
+      locations        = ["SG"]
     }
   }
   tags = var.tags
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate.cert.arn
-    ssl_support_method       = "sni-only"
-    minimum_protocol_version = "TLSv1.2_2018"
+    # acm_certificate_arn      = aws_acm_certificate.cert.arn
+    cloudfront_default_certificate = true
+    # ssl_support_method       = "sni-only"
+    # minimum_protocol_version = "TLSv1.2_2018"
   }
 }
