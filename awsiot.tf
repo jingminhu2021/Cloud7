@@ -113,15 +113,62 @@ resource "aws_iot_topic_rule" "rule" {
 
   dynamodb {
     table_name = "iotdata"
-    hash_key_field = "thingID"
-    hash_key_value = "$${aws_iot_thing.thing.arn}"
-    range_key_field = "timestamp"
-    range_key_value = "$${timestamp()}"
+    hash_key_field = "timestamp"
+    hash_key_value = "$${timestamp()}"
+    hash_key_type = "NUMBER"
+    range_key_field = "thingId"
+    range_key_value = "$${cast(topic(2) AS STRING)}"
+    range_key_type = "STRING"
     payload_field = "vitals"
     role_arn = aws_iam_role.role.arn
     }
+  
+  error_action {
+    cloudwatch_logs {
+      log_group_name = aws_cloudwatch_log_group.yada.name
+      role_arn = aws_iam_role.cloudwatchrole.arn
+    }
+}
 }
 
+#For Cloudwatch Logs
+resource "aws_cloudwatch_log_group" "yada" {
+  name = "Yada"
+}
+
+resource "aws_iam_role" "cloudwatchrole" {
+  name               = "cloudwatchrole"
+  assume_role_policy = data.aws_iam_policy_document.cloudwatch_assume_role.json
+}
+
+data "aws_iam_policy_document" "cloudwatch_assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["iot.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+data "aws_iam_policy_document" "iam_policy_for_cloudwatchlog" {
+  statement {
+    effect    = "Allow"
+    actions   = ["logs:PutLogEvents"]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_role_policy" "iam_policy_for_cloudwatchlog" {
+  name   = "cloudwatchlogpolicy"
+  role   = aws_iam_role.cloudwatchrole.id
+  policy = data.aws_iam_policy_document.iam_policy_for_cloudwatchlog.json
+}
+
+#For DyanmoDB
 data "aws_iam_policy_document" "assume_role" {
   statement {
     effect = "Allow"

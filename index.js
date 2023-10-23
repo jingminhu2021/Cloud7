@@ -31,7 +31,7 @@ client.on("connect", () => {
 		if (!err) {
 			console.log("Connected, send some messages by typing in the terminal (press enter to send)");
 			rl.on("line", (data) => {
-				client.publish(`things/${THING_NAME}/test`, JSON.stringify({vital: data}));
+				client.publish(`things/${THING_NAME}/test`, JSON.stringify({vitals: data}));
 			});
 		}
 	});
