@@ -18,12 +18,14 @@ data "template_cloudinit_config" "user_data" {
   part {
     content_type = "text/x-shellscript"
     content      = <<-EOT
-    #! /bin/bash
+    #!/bin/bash
+    echo ‘deb https://packages.grafana.com/oss/deb stable main’ >> /etc/apt/sources.list
+    curl https://packages.grafana.com/gpg.key | sudo apt-key add -
     sudo apt-get update
-    sudo apt-get install -y apache2
-    sudo systemctl start apache2
-    sudo systemctl enable apache2
-    echo "<h1>Deployed to AWS EC2 via Terraform </h1>" | sudo tee /var/www/html/index.html
+    sudo apt-get -y install grafana
+    systemctl daemon-reload
+    systemctl start grafana-server
+    systemctl enable grafana-server.service
 
     EOT
   }

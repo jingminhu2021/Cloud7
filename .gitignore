@@ -33,10 +33,6 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-#Terraform files
-.terraform
-.terraform.lock.hcl
-
 #NPM files
 node_modules
 
