@@ -1,35 +1,52 @@
 # fetch ubuntu ami id:
-data "aws_ami" "ubuntu_ami" {
+# data "aws_ami" "ubuntu_ami" {
+#   filter {
+#     name   = "name"
+#     values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+#   }
+#   filter {
+#     name   = "virtualization-type"
+#     values = ["hvm"]
+#   }
+#   most_recent = true
+#   owners      = ["099720109477"]
+# }
+
+data "aws_ami" "appsmith_ami" {
+  # filter {
+  #   name   = "name"
+  #   values = ["appsmith-ee-ami-*"]
+  # }
   filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+    name   = "image-id"
+    values = ["ami-0d4ff711255cd3e38"]
   }
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
   }
   most_recent = true
-  owners      = ["099720109477"]
 }
-# generate user data script :
-data "template_cloudinit_config" "user_data" {
-  gzip          = false
-  base64_encode = true
-  part {
-    content_type = "text/x-shellscript"
-    content      = <<-EOT
-    #!/bin/bash
-    echo ‘deb https://packages.grafana.com/oss/deb stable main’ >> /etc/apt/sources.list
-    curl https://packages.grafana.com/gpg.key | sudo apt-key add -
-    sudo apt-get update
-    sudo apt-get -y install grafana
-    systemctl daemon-reload
-    systemctl start grafana-server
-    systemctl enable grafana-server.service
 
-    EOT
-  }
-}
+# generate user data script :
+# data "template_cloudinit_config" "user_data" {
+#   gzip          = false
+#   base64_encode = true
+#   part {
+#     content_type = "text/x-shellscript"
+#     content      = <<-EOT
+#     #!/bin/bash
+#     echo ‘deb https://packages.grafana.com/oss/deb stable main’ >> /etc/apt/sources.list
+#     curl https://packages.grafana.com/gpg.key | sudo apt-key add -
+#     sudo apt-get update
+#     sudo apt-get -y install grafana
+#     systemctl daemon-reload
+#     systemctl start grafana-server
+#     systemctl enable grafana-server.service
+
+#     EOT
+#   }
+# }
 
 # Create a security group for EC2 instances to allow ingress on port 80 :
 resource "aws_security_group" "ec2_ingress" {
@@ -56,10 +73,11 @@ resource "aws_security_group" "ec2_ingress" {
 
 # create launch configuration for ASG :
 resource "aws_launch_configuration" "asg_launch_conf" {
-  name_prefix     = "tf-asg-lc"
-  image_id        = data.aws_ami.ubuntu_ami.id
-  instance_type   = "t2.micro"
-  user_data       = data.template_cloudinit_config.user_data.rendered
+  name_prefix = "tf-asg-lc"
+  # image_id      = data.aws_ami.ubuntu_ami.id
+  image_id      = data.aws_ami.appsmith_ami.id
+  instance_type = "t3.medium"
+  # user_data       = data.template_cloudinit_config.user_data.rendered
   security_groups = [aws_security_group.ec2_ingress.id]
   lifecycle {
     create_before_destroy = true
