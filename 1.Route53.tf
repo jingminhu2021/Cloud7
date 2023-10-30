@@ -1,5 +1,5 @@
 locals {
-  domain_name = aws_cloudfront_distribution.cf_dist.domain_name
+  domain_name = var.domain_name
 }
 
 # generate ACM cert for domain :
