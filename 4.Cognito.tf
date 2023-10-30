@@ -30,7 +30,7 @@ resource "aws_cognito_user_pool" "user_pool" {
 resource "aws_cognito_user_pool_client" "client" {
   name                                 = "cognito-client"
   user_pool_id                         = aws_cognito_user_pool.user_pool.id
-  callback_urls                        = ["https://d2bl1otdeell8r.cloudfront.net/login/oauth2/code/oidc"]
+  callback_urls                        = ["https://cloud7.solutions/login/oauth2/code/oidc"]
   generate_secret                      = true
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_flows                  = ["code"]
