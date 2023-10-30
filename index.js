@@ -22,20 +22,37 @@ client.on("error", (e) => {
 	console.log(e);
 	process.exit(-1);
 });
-const rl = readline.createInterface({
-	input: process.stdin,
-});
+// const rl = readline.createInterface({
+// 	input: process.stdin,
+// });
 
 client.on("connect", () => {
 	client.subscribe(`things/${THING_NAME}/test`, (err) => {
 		if (!err) {
-			console.log("Connected, send some messages by typing in the terminal (press enter to send)");
-			rl.on("line", (data) => {
-				client.publish(`things/${THING_NAME}/test`, JSON.stringify({vitals: data}));
-			});
+			console.log("Connected");
+			// rl.on("line", (data) => {
+			// 	client.publish(`things/${THING_NAME}/test`, JSON.stringify({vitals: data}));
+			// });
+			const oxygen = [98, 88, 94];
+			const pulseRate  = [65, 94, 100];
+			const temperature = [95, 98, 103];
+			for (let i=0; i<3; i++) {
+				o2 = oxygen[i];
+				pr  =  pulseRate[i];
+				t =  temperature[i];
+				console.log("Sending", i);
+				client.publish(`things/${THING_NAME}/test`, JSON.stringify({
+					"thingId": opt.clientId,
+					"Oxygen": o2,
+					"PulseRate": pr,
+					"Temperature": t,
+				}));
+			}
 		}
 	});
 });
+// client.end()
+// console.log("Connection Closed");
 
 // client.on("message", (topic, message) => {
 // 	console.log("[Message received]: " + JSON.stringify(JSON.parse(message.toString()).current.state, undefined, 2));
