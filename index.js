@@ -40,19 +40,19 @@ client.on("connect", () => {
 				o2 = oxygen[i];
 				pr  =  pulseRate[i];
 				t =  temperature[i];
-				console.log("Sending", i);
-				client.publish(`things/${THING_NAME}/test`, JSON.stringify({
-					"thingId": opt.clientId,
-					"Oxygen": o2,
-					"PulseRate": pr,
-					"Temperature": t,
-				}));
+				setTimeout(() => {
+					console.log("Sending message", i)
+					client.publish(`things/${THING_NAME}/test`, JSON.stringify({
+						"thingId": opt.clientId,
+						"Oxygen": o2,
+						"PulseRate": pr,
+						"Temperature": t,
+					}));
+				  }, 1000*i);
 			}
 		}
 	});
 });
-// client.end()
-// console.log("Connection Closed");
 
 // client.on("message", (topic, message) => {
 // 	console.log("[Message received]: " + JSON.stringify(JSON.parse(message.toString()).current.state, undefined, 2));
