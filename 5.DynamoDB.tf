@@ -31,7 +31,7 @@ resource "aws_vpc_endpoint" "dynamodb" {
 
 resource "aws_appautoscaling_target" "environment_table_read_target" {
   max_capacity       = 20
-  min_capacity       = 5
+  min_capacity       = 10
   resource_id        = "table/${aws_dynamodb_table.basic-dynamodb-table.name}"
   scalable_dimension = "dynamodb:table:ReadCapacityUnits"
   service_namespace  = "dynamodb"
@@ -54,8 +54,8 @@ resource "aws_appautoscaling_policy" "environment_table_read_policy" {
 }
 
 resource "aws_appautoscaling_target" "environment_table_write_target" {
-  max_capacity       = 10
-  min_capacity       = 5
+  max_capacity       = 20
+  min_capacity       = 10
   resource_id        = "table/${aws_dynamodb_table.basic-dynamodb-table.name}"
   scalable_dimension = "dynamodb:table:WriteCapacityUnits"
   service_namespace  = "dynamodb"
