@@ -123,3 +123,29 @@ module "vpc" {
 
   tags = var.tags
 }
+
+# resource "aws_network_acl" "acl" {
+#   vpc_id = module.vpc.vpc_id
+# }
+
+resource "aws_network_acl_rule" "acl_https" {
+  network_acl_id = module.vpc.default_network_acl_id
+  rule_number    = 102
+  egress         = false
+  protocol       = "tcp"
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 443
+  to_port        = 443
+}
+
+resource "aws_network_acl_rule" "acl_http" {
+  network_acl_id = module.vpc.default_network_acl_id
+  rule_number    = 103
+  egress         = false
+  protocol       = "tcp"
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 80
+  to_port        = 80
+}
