@@ -42,3 +42,14 @@ resource "aws_route53_record" "websiteurl" {
     evaluate_target_health = true
   }
 }
+
+resource "aws_route53_health_check" "health_check" {
+  fqdn              = aws_route53_record.websiteurl.fqdn
+  port              = 443
+  type              = "HTTPS"
+  failure_threshold = 3
+  regions           = ["ap-southeast-1", "ap-southeast-2", "ap-northeast-1"] # minimum 3 item required
+  tags = {
+    Name = "health_check"
+  }
+}
