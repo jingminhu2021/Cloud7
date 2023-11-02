@@ -53,3 +53,54 @@ resource "aws_route53_health_check" "health_check" {
     Name = "health_check"
   }
 }
+
+resource "aws_kms_key" "route53_kms" {
+  provider                 = aws.us-east-1
+  description              = "KMS key for Route53"
+  deletion_window_in_days  = 7
+  key_usage                = "SIGN_VERIFY"
+  customer_master_key_spec = "ECC_NIST_P256"
+  policy = jsonencode({
+    Statement = [
+      {
+        Action = [
+          "kms:DescribeKey",
+          "kms:GetPublicKey",
+          "kms:Sign",
+          "kms:Verify"
+        ],
+        Effect = "Allow",
+        Principal = {
+          Service = "dnssec-route53.amazonaws.com"
+        }
+        Resource = "*"
+      },
+      {
+        Action = "kms:*",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Resource = "*"
+      }
+    ]
+    Version = "2012-10-17"
+  })
+}
+
+data "aws_caller_identity" "current" {}
+
+resource "aws_route53_key_signing_key" "kms_key_signing_key" {
+  provider                   = aws.us-east-1
+  hosted_zone_id             = aws_route53_zone.hosted_zone.zone_id
+  key_management_service_arn = aws_kms_key.route53_kms.arn
+  name                       = "route53_key"
+}
+
+resource "aws_route53_hosted_zone_dnssec" "hosted_zone_dnssec" {
+  provider = aws.us-east-1
+  depends_on = [
+    aws_route53_key_signing_key.kms_key_signing_key
+  ]
+  hosted_zone_id = aws_route53_key_signing_key.kms_key_signing_key.hosted_zone_id
+}

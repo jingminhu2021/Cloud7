@@ -1,30 +1,33 @@
 resource "aws_dynamodb_table" "basic-dynamodb-table" {
-    name           = "iotdata"
-    billing_mode   = "PROVISIONED"
-    read_capacity  = 5
-    write_capacity = 5
-    hash_key       = "thingId"
-    range_key      = "timestamp"
+  name           = "iotdata"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 5
+  write_capacity = 5
+  hash_key       = "thingId"
+  range_key      = "timestamp"
+  point_in_time_recovery {
+    enabled = true
+  }
 
-    attribute {
-        name = "thingId"
-        type = "S"
-    }
+  attribute {
+    name = "thingId"
+    type = "S"
+  }
 
-    attribute {
-        name = "timestamp"
-        type = "N"
-    }
+  attribute {
+    name = "timestamp"
+    type = "N"
+  }
 
-    lifecycle {
-        ignore_changes = [read_capacity, write_capacity]
-    }
+  lifecycle {
+    ignore_changes = [read_capacity, write_capacity]
+  }
 
 }
 
 resource "aws_vpc_endpoint" "dynamodb" {
-  vpc_id = module.vpc.vpc_id
-  service_name = "com.amazonaws.${var.aws_region}.dynamodb"
+  vpc_id          = module.vpc.vpc_id
+  service_name    = "com.amazonaws.${var.aws_region}.dynamodb"
   route_table_ids = module.vpc.private_route_table_ids
 }
 
