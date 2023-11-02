@@ -21,7 +21,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.2.0"
+      "version": "10.3.0-62838"
     },
     {
       "type": "panel",
@@ -60,11 +60,13 @@
   "id": null,
   "links": [
     {
-      "asDropdown": true,
+      "asDropdown": false,
       "icon": "external link",
       "includeVars": false,
       "keepTime": false,
-      "tags": [],
+      "tags": [
+        "link"
+      ],
       "targetBlank": false,
       "title": "Services",
       "tooltip": "",
@@ -681,10 +683,11 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 38,
+  "schemaVersion": 39,
   "tags": [
     "cloudwatch",
-    "monitoringartist"
+    "monitoringartist",
+    "link"
   ],
   "templating": {
     "list": [
@@ -692,7 +695,7 @@
         "current": {
           "selected": false,
           "text": "CloudWatch",
-          "value": "d97aceb0-a5b7-4a26-abbf-6f18450c869e"
+          "value": "f52a7a46-961a-40ca-bedf-ef393db4096c"
         },
         "hide": 0,
         "includeAll": false,
@@ -909,6 +912,6 @@
   "timezone": "browser",
   "title": "AWS DynamoDB",
   "uid": "AWSDynamo",
-  "version": 11,
+  "version": 3,
   "weekStart": ""
 }

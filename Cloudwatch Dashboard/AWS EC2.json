@@ -21,7 +21,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.2.0"
+      "version": "10.3.0-62838"
     },
     {
       "type": "panel",
@@ -54,11 +54,13 @@
   "id": null,
   "links": [
     {
-      "asDropdown": true,
+      "asDropdown": false,
       "icon": "external link",
       "includeVars": false,
       "keepTime": false,
-      "tags": [],
+      "tags": [
+        "link"
+      ],
       "targetBlank": false,
       "title": "Services",
       "tooltip": "",
@@ -125,7 +127,7 @@
               }
             ]
           },
-          "unit": "bytes"
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -134,6 +136,134 @@
         "w": 24,
         "x": 0,
         "y": 0
+      },
+      "id": 7,
+      "links": [],
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "alias": "",
+          "application": {
+            "filter": ""
+          },
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "${DS_CLOUDWATCH}"
+          },
+          "dimensions": {
+            "InstanceId": "$instanceid"
+          },
+          "functions": [],
+          "group": {
+            "filter": ""
+          },
+          "host": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "label": "",
+          "metricEditorMode": 0,
+          "metricName": "CPUUtilization",
+          "metricQueryType": 0,
+          "mode": 0,
+          "namespace": "AWS/EC2",
+          "options": {
+            "showDisabledItems": false
+          },
+          "period": "",
+          "refId": "A",
+          "region": "$region",
+          "statistic": "Average"
+        }
+      ],
+      "title": "CPUUtilization",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "${DS_CLOUDWATCH}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 7
       },
       "id": 11,
       "links": [],
@@ -297,7 +427,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 7
+        "y": 14
       },
       "id": 12,
       "links": [],
@@ -446,133 +576,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 14
-      },
-      "id": 7,
-      "links": [],
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "lastNotNull",
-            "max",
-            "min"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "10.2.0",
-      "targets": [
-        {
-          "alias": "",
-          "application": {
-            "filter": ""
-          },
-          "datasource": {
-            "type": "cloudwatch",
-            "uid": "${DS_CLOUDWATCH}"
-          },
-          "dimensions": {
-            "InstanceId": "$instanceid"
-          },
-          "functions": [],
-          "group": {
-            "filter": ""
-          },
-          "host": {
-            "filter": ""
-          },
-          "item": {
-            "filter": ""
-          },
-          "label": "",
-          "metricEditorMode": 0,
-          "metricName": "CPUUtilization",
-          "metricQueryType": 0,
-          "mode": 0,
-          "namespace": "AWS/EC2",
-          "options": {
-            "showDisabledItems": false
-          },
-          "period": "",
-          "refId": "A",
-          "region": "$region",
-          "statistic": "Average"
-        }
-      ],
-      "title": "CPUUtilization",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "cloudwatch",
-        "uid": "${DS_CLOUDWATCH}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
               },
               {
                 "color": "red",
@@ -2036,10 +2039,11 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 38,
+  "schemaVersion": 39,
   "tags": [
     "monitoringartist",
-    "cloudwatch"
+    "cloudwatch",
+    "link"
   ],
   "templating": {
     "list": [
@@ -2047,7 +2051,7 @@
         "current": {
           "selected": false,
           "text": "CloudWatch",
-          "value": "d97aceb0-a5b7-4a26-abbf-6f18450c869e"
+          "value": "f52a7a46-961a-40ca-bedf-ef393db4096c"
         },
         "hide": 0,
         "includeAll": false,
@@ -2159,7 +2163,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {

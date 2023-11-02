@@ -30,7 +30,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.2.0"
+      "version": "10.3.0-62838"
     },
     {
       "type": "panel",
@@ -75,11 +75,13 @@
   "id": null,
   "links": [
     {
-      "asDropdown": true,
+      "asDropdown": false,
       "icon": "external link",
       "includeVars": false,
       "keepTime": false,
-      "tags": [],
+      "tags": [
+        "link"
+      ],
       "targetBlank": false,
       "title": "Services",
       "tooltip": "",
@@ -192,7 +194,7 @@
           "zoom": 2.23
         }
       },
-      "pluginVersion": "10.2.0",
+      "pluginVersion": "10.3.0-62838",
       "targets": [
         {
           "datasource": {
@@ -322,7 +324,7 @@
           }
         ]
       },
-      "pluginVersion": "10.2.0",
+      "pluginVersion": "10.3.0-62838",
       "targets": [
         {
           "datasource": {
@@ -446,7 +448,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "10.2.0",
+      "pluginVersion": "10.3.0-62838",
       "targets": [
         {
           "datasource": {
@@ -808,7 +810,7 @@
         },
         "showHeader": false
       },
-      "pluginVersion": "10.2.0",
+      "pluginVersion": "10.3.0-62838",
       "targets": [
         {
           "datasource": {
@@ -932,7 +934,7 @@
         },
         "showHeader": false
       },
-      "pluginVersion": "10.2.0",
+      "pluginVersion": "10.3.0-62838",
       "targets": [
         {
           "datasource": {
@@ -1371,12 +1373,12 @@
   ],
   "refresh": "",
   "revision": 1,
-  "schemaVersion": 38,
+  "schemaVersion": 39,
   "tags": [
-    "aws",
     "waf",
     "wafv2",
-    "cloudwatch"
+    "cloudwatch",
+    "link"
   ],
   "templating": {
     "list": [
@@ -1384,7 +1386,7 @@
         "current": {
           "selected": false,
           "text": "CloudWatch",
-          "value": "d97aceb0-a5b7-4a26-abbf-6f18450c869e"
+          "value": "f52a7a46-961a-40ca-bedf-ef393db4096c"
         },
         "hide": 0,
         "includeAll": false,
@@ -1453,6 +1455,6 @@
   "timezone": "",
   "title": "AWS WAFv2",
   "uid": "EjsIYEBVz",
-  "version": 9,
+  "version": 2,
   "weekStart": ""
 }
