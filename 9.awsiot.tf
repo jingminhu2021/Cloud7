@@ -226,7 +226,20 @@ resource "aws_iot_topic_rule" "rule" {
   enabled     = true
   sql         = "SELECT thingId, Oxygen, PulseRate, Temperature FROM 'things/+/test'"
   sql_version = "2016-03-23"
-
+  error_action {
+    dynamodb {
+    table_name = "iotdata"
+    hash_key_field = "thingId"
+    hash_key_value = "$${cast(topic(2) AS STRING)}"
+    hash_key_type = "STRING"
+    operation = "INSERT"
+    payload_field = "payload"
+    range_key_field = "timestamp"
+    range_key_type = "NUMBER"
+    range_key_value = "$${timestamp}"
+    role_arn = "arn:aws:iam::708779265549:role/service-role/dynamodbrule"
+    }
+  }
   lambda {
     function_arn = "arn:aws:lambda:ap-southeast-1:708779265549:function:covidtestfunc"
     }
