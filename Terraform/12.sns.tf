@@ -57,3 +57,4 @@ resource "aws_sns_topic_subscription" "admin_alert_grafana" {
     aws_sns_topic.admin_alert
   ]
 }
+
