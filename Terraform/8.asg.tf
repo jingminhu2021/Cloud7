@@ -34,13 +34,6 @@ resource "aws_security_group" "ec2_ingress" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   egress {
     from_port   = 0
     to_port     = 0
@@ -54,11 +47,9 @@ resource "aws_security_group" "ec2_ingress" {
 
 # create launch configuration for ASG :
 resource "aws_launch_configuration" "asg_launch_conf" {
-  name_prefix = "tf-asg-lc"
-  # image_id      = data.aws_ami.ubuntu_ami.id
-  image_id      = data.aws_ami.appsmith_ami.id
-  instance_type = "t3.medium"
-  # user_data       = data.template_cloudinit_config.user_data.rendered
+  name_prefix     = "tf-asg-lc"
+  image_id        = data.aws_ami.appsmith_ami.id
+  instance_type   = "t3.medium"
   security_groups = [aws_security_group.ec2_ingress.id]
   lifecycle {
     create_before_destroy = true
