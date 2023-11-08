@@ -152,53 +152,53 @@ resource "aws_network_acl_rule" "acl_http" {
 
 
 resource "aws_flow_log" "vpc_flow_logs" {
-  iam_role_arn = aws_iam_role.vpc_flow_logs_iam_role.arn
+  iam_role_arn    = aws_iam_role.vpc_flow_logs_iam_role.arn
   log_destination = aws_cloudwatch_log_group.vpc_flow_logs.arn
-  traffic_type = "ALL"
-  vpc_id = module.vpc.vpc_id
+  traffic_type    = "ALL"
+  vpc_id          = module.vpc.vpc_id
 }
 
 resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
-  name = "vpc_flow_logs"
+  name              = "vpc_flow_logs"
   retention_in_days = 30
 }
 
 data "aws_iam_policy_document" "assume_role" {
-    statement {
-      effect = "Allow"
+  statement {
+    effect = "Allow"
 
-      principals {
-        type        = "Service"
-        identifiers = ["vpc-flow-logs.amazonaws.com"]
-      }
+    principals {
+      type        = "Service"
+      identifiers = ["vpc-flow-logs.amazonaws.com"]
+    }
 
-      actions = ["sts:AssumeRole"]
+    actions = ["sts:AssumeRole"]
   }
 }
 
 resource "aws_iam_role" "vpc_flow_logs_iam_role" {
-  name = "vpc_flow_logs"
+  name               = "vpc_flow_logs"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
 data "aws_iam_policy_document" "vpc_flow_logs_iam_policy_document" {
-    statement {
-      effect = "Allow"
+  statement {
+    effect = "Allow"
 
-      actions = [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogGroups",
-        "logs:DescribeLogStreams",
-      ]
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams",
+    ]
 
-      resources = ["*"]
+    resources = ["*"]
   }
 }
 
 resource "aws_iam_role_policy" "vpc_flow_logs_iam_policy" {
-  name = "vpc_flow_logs"
-  role = aws_iam_role.vpc_flow_logs_iam_role.id
+  name   = "vpc_flow_logs"
+  role   = aws_iam_role.vpc_flow_logs_iam_role.id
   policy = data.aws_iam_policy_document.vpc_flow_logs_iam_policy_document.json
 }

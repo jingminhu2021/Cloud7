@@ -44,13 +44,13 @@ resource "aws_route53_record" "websiteurl" {
 }
 
 resource "aws_route53_health_check" "health_check" {
-  fqdn              = aws_route53_record.websiteurl.fqdn
-  port              = 443
-  type              = "HTTPS"
-  failure_threshold = 3
+  fqdn               = aws_route53_record.websiteurl.fqdn
+  port               = 443
+  type               = "HTTPS"
+  failure_threshold  = 3
   invert_healthcheck = false
-  request_interval  = 30
-  regions           = ["ap-southeast-1", "ap-southeast-2", "ap-northeast-1"] # minimum 3 item required
+  request_interval   = 30
+  regions            = ["ap-southeast-1", "ap-southeast-2", "ap-northeast-1"] # minimum 3 item required
   tags = {
     Name = "health_check"
   }
