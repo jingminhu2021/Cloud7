@@ -7,13 +7,13 @@ resource "random_id" "idB" {
 }
 
 resource "tls_private_key" "keyA" {
-  algorithm   = "RSA"
-	rsa_bits = 2048
+  algorithm = "RSA"
+  rsa_bits  = 2048
 }
 
 resource "tls_private_key" "keyB" {
-  algorithm   = "RSA"
-	rsa_bits = 2048
+  algorithm = "RSA"
+  rsa_bits  = 2048
 }
 
 resource "tls_self_signed_cert" "certA" {
@@ -24,9 +24,9 @@ resource "tls_self_signed_cert" "certA" {
   allowed_uses = [
   ]
 
-	subject {
-		organization = "test"
-	}
+  subject {
+    organization = "test"
+  }
 }
 
 resource "tls_self_signed_cert" "certB" {
@@ -37,19 +37,19 @@ resource "tls_self_signed_cert" "certB" {
   allowed_uses = [
   ]
 
-	subject {
-		organization = "test"
-	}
+  subject {
+    organization = "test"
+  }
 }
 
 resource "aws_iot_certificate" "certA" {
-	certificate_pem = trimspace(tls_self_signed_cert.certA.cert_pem)
-	active          = true
+  certificate_pem = trimspace(tls_self_signed_cert.certA.cert_pem)
+  active          = true
 }
 
 resource "aws_iot_certificate" "certB" {
-	certificate_pem = trimspace(tls_self_signed_cert.certB.cert_pem)
-	active          = true
+  certificate_pem = trimspace(tls_self_signed_cert.certB.cert_pem)
+  active          = true
 }
 
 data "aws_arn" "thingA" {
@@ -157,41 +157,41 @@ data "http" "root_ca" {
 }
 
 data "aws_iot_endpoint" "iot_endpoint" {
-	endpoint_type = "iot:Data-ATS"
+  endpoint_type = "iot:Data-ATS"
 }
 
 output "ca" {
-	value = data.http.root_ca.response_body
+  value = data.http.root_ca.response_body
 }
 
 output "iot_endpoint" {
-	value = data.aws_iot_endpoint.iot_endpoint.endpoint_address
+  value = data.aws_iot_endpoint.iot_endpoint.endpoint_address
 }
 
 output "thing_nameA" {
-	value = aws_iot_thing.thingA.name
+  value = aws_iot_thing.thingA.name
 }
 
 output "certA" {
-	value = tls_self_signed_cert.certA.cert_pem
+  value = tls_self_signed_cert.certA.cert_pem
 }
 
 output "keyA" {
-	value = tls_private_key.keyA.private_key_pem
-	sensitive = true
+  value     = tls_private_key.keyA.private_key_pem
+  sensitive = true
 }
 
 output "thing_nameB" {
-	value = aws_iot_thing.thingB.name
+  value = aws_iot_thing.thingB.name
 }
 
 output "certB" {
-	value = tls_self_signed_cert.certB.cert_pem
+  value = tls_self_signed_cert.certB.cert_pem
 }
 
 output "keyB" {
-	value = tls_private_key.keyB.private_key_pem
-	sensitive = true
+  value     = tls_private_key.keyB.private_key_pem
+  sensitive = true
 }
 
 # resource "aws_iot_topic_rule" "rule" {
@@ -211,7 +211,7 @@ output "keyB" {
 #     range_key_type = "STRING"
 #     role_arn = aws_iam_role.role.arn
 #     }
-  
+
 #   error_action {
 #     cloudwatch_logs {
 #       log_group_name = aws_cloudwatch_log_group.yada.name
@@ -228,28 +228,28 @@ resource "aws_iot_topic_rule" "rule" {
   sql_version = "2016-03-23"
   error_action {
     dynamodb {
-    table_name = "iotdata"
-    hash_key_field = "thingId"
-    hash_key_value = "$${cast(topic(2) AS STRING)}"
-    hash_key_type = "STRING"
-    operation = "INSERT"
-    payload_field = "payload"
-    range_key_field = "timestamp"
-    range_key_type = "NUMBER"
-    range_key_value = "$${timestamp}"
-    role_arn = "arn:aws:iam::708779265549:role/service-role/dynamodbrule"
+      table_name      = "iotdata"
+      hash_key_field  = "thingId"
+      hash_key_value  = "$${cast(topic(2) AS STRING)}"
+      hash_key_type   = "STRING"
+      operation       = "INSERT"
+      payload_field   = "payload"
+      range_key_field = "timestamp"
+      range_key_type  = "NUMBER"
+      range_key_value = "$${timestamp}"
+      role_arn        = "arn:aws:iam::708779265549:role/service-role/dynamodbrule"
     }
   }
   lambda {
     function_arn = "arn:aws:lambda:ap-southeast-1:708779265549:function:covidtestfunc"
-    }
-  
-#   error_action {
-#     cloudwatch_logs {
-#       log_group_name = aws_cloudwatch_log_group.yada.name
-#       role_arn = aws_iam_role.cloudwatchrole.arn
-#     }
-# }
+  }
+
+  #   error_action {
+  #     cloudwatch_logs {
+  #       log_group_name = aws_cloudwatch_log_group.yada.name
+  #       role_arn = aws_iam_role.cloudwatchrole.arn
+  #     }
+  # }
 }
 
 #For Cloudwatch Logs
