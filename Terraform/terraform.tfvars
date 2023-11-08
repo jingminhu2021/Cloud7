@@ -1,4 +1,4 @@
-aws_profile  = "default"
+# aws_profile  = "default"
 aws_region   = "ap-southeast-1"
 service_name = "cloud7"
 domain_name  = "cloud7.solutions"
